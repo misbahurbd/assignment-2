@@ -4,7 +4,7 @@
 
 ### 1. Clone the repository:
 
-```typescript
+```bash
 git clone https://github.com/misbahurbd/assignment-2.git
 ```
 
@@ -12,13 +12,13 @@ Run this comment on your terminal to clone this project
 
 ### 2. Open project directory:
 
-```typescript
+```bash
 cd assignment-2
 ```
 
 ### 3. Install dependencies:
 
-```typescript
+```bash
 npm install
 ```
 
