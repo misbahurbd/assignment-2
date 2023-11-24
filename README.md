@@ -8,8 +8,6 @@
 git clone https://github.com/misbahurbd/assignment-2.git
 ```
 
-Run this comment on your terminal to clone this project
-
 ### 2. Open project directory:
 
 ```bash
@@ -48,7 +46,7 @@ Server will start on `http://localhost:5000` as `PORT` on .env file
 - Endpoint: **POST /api/users**
 - Request body: Contain user data object in JSON.
 - Example URL: `http://localhost:5000/api/users`
-- Example Request Body:
+- Example request body:
 
 ```json
 {
@@ -76,12 +74,12 @@ Server will start on `http://localhost:5000` as `PORT` on .env file
 - Endpoint: **GET /api/users**
 - Example URL: `http://localhost:5000/api/users`
 
-### 4. Get single user by userId:
+### 3. Get single user by userId:
 
 - Endpoint: **GET /api/users/:userId**
 - Example URL: `http://localhost:5000/api/users/2`
 
-### 5. Update user data by userId:
+### 4. Update user data by userId:
 
 - Endpoint: **PUT /api/users/:userId**
 - Request body: Contain user data object in JSON
@@ -100,7 +98,32 @@ Server will start on `http://localhost:5000` as `PORT` on .env file
 }
 ```
 
-### 6. Delete user by userId:
+### 5. Delete user by userId:
 
 - Endpoint: **DELETE /api/users/:userId**
 - Example URL: `http://localhost:5000/api/users/2`
+
+### 6. Add order to user using userId
+
+- Endpoint: **PUT /api/users/:userId/orders**
+- Example URL: `http://localhost:5000/api/users/2/orders`
+- Request body: Contain product data object in JSON
+- Example request body:
+
+```json
+{
+  "productName": "Nokia Lumia 850",
+  "Price": 865,
+  "quantity": 2
+}
+```
+
+### 7. Get all orders from User using userId
+
+- Endpoint: **GET /api/users/:userId/orders**
+- Example URL: `http://localhost:5000/api/users/2/orders`
+
+### 7. Calculate total order price for specific user using userId
+
+- Endpoint: **GET /api/users/:userId/orders/total-price**
+- Example URL: `http://localhost:5000/api/users/2/orders/total-price`
