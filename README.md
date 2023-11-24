@@ -43,10 +43,11 @@ Server will start on `http://localhost:5000` as `PORT` on .env file
 
 ## API Endpoints
 
-# Create user:
+### 1. Create user:
 
 - Endpoint: **POST /api/users**
 - Request body: userdata object in json format
+- Example URL: `http://localhost:5000/api/users`
 - Example:
 
 ```json
@@ -69,3 +70,13 @@ Server will start on `http://localhost:5000` as `PORT` on .env file
   }
 }
 ```
+
+### 2. Get all users:
+
+- Endpoint: **GET /api/users**
+- Example URL: `http://localhost:5000/api/users`
+
+### 4. Get single user by userId
+
+- Endpoint: **GET /api/users/:userId**
+- Example URL: `http://localhost:5000/api/users/2`
