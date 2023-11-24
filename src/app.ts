@@ -1,11 +1,15 @@
-import express, { Application } from 'express'
-import cors from 'cors'
+import express, { Application } from 'express';
+import cors from 'cors';
+import { userRouter } from './modules/user/user.router';
 
 // initialize express app
-const app: Application = express()
+const app: Application = express();
 
 // initialize express parser
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
-export default app
+// initialize routes
+app.use('/api/users', userRouter);
+
+export default app;
