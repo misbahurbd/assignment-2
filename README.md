@@ -46,9 +46,9 @@ Server will start on `http://localhost:5000` as `PORT` on .env file
 ### 1. Create user:
 
 - Endpoint: **POST /api/users**
-- Request body: userdata object in json format
+- Request body: Contain user data object in JSON.
 - Example URL: `http://localhost:5000/api/users`
-- Example:
+- Example Request Body:
 
 ```json
 {
@@ -76,7 +76,31 @@ Server will start on `http://localhost:5000` as `PORT` on .env file
 - Endpoint: **GET /api/users**
 - Example URL: `http://localhost:5000/api/users`
 
-### 4. Get single user by userId
+### 4. Get single user by userId:
 
 - Endpoint: **GET /api/users/:userId**
+- Example URL: `http://localhost:5000/api/users/2`
+
+### 5. Update user data by userId:
+
+- Endpoint: **PUT /api/users/:userId**
+- Request body: Contain user data object in JSON
+- Example URL: `http://localhost:5000/api/users/2`
+- Example Request Body:
+
+```json
+{
+  "username": "john_doe",
+  "email": "john.doe@example.com",
+  "address": {
+    "street": "123 Main Street",
+    "city": "Anytown",
+    "country": "Countryland"
+  }
+}
+```
+
+### 6. Delete user by userId:
+
+- Endpoint: **DELETE /api/users/:userId**
 - Example URL: `http://localhost:5000/api/users/2`
