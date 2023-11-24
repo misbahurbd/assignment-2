@@ -6,7 +6,9 @@ import { userValidationSchema, orderValidationSchema } from './user.validation';
 const createUser = async (userData: IUser): Promise<IUser> => {
   const validateData = userValidationSchema.parse(userData);
   if (await User.isUserExist(validateData)) {
-    throw new Error('User already exist');
+    throw new Error(
+      'User already exist, use different userId, username or email',
+    );
   } else {
     const result = await User.create(validateData);
     return result;
@@ -30,7 +32,8 @@ const updateUser = async (
   userId: number,
   userData: IUser,
 ): Promise<IUser | null> => {
-  const result = await User.findOneAndUpdate({ userId }, userData);
+  const validateData = userValidationSchema.partial().parse(userData);
+  const result = await User.findOneAndUpdate({ userId }, validateData);
   return result;
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { userServices } from './user.service';
 
@@ -12,10 +13,10 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User created successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Unable to create user',
+      message: err.message || 'Unable to create user',
       error: err,
     });
     console.log(err);
@@ -33,10 +34,10 @@ const getUsers = async (req: Request, res: Response) => {
       message: 'Users fetched successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Unable to create user',
+      message: err.message || 'Unable to fetch user',
       error: err,
     });
     console.log(err);
@@ -102,10 +103,10 @@ const updateUser = async (req: Request, res: Response) => {
       message: 'User updated successfully',
       data: result,
     });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({
       success: false,
-      message: 'Unable to create user',
+      message: err.message || 'Unable to update user',
       error: err,
     });
     console.log(err);
