@@ -35,6 +35,37 @@ BCRYPT_SALT_ROUNDS=12
 
 ### 5. Start Development Server
 
-```typescript
-`npm run dev`;
+```bash
+npm run dev
+```
+
+Server will start on `http://localhost:5000` as `PORT` on .env file
+
+## API Endpoints
+
+# Create user:
+
+- Endpoint: **POST /api/users**
+- Request body: userdata object in json format
+- Example:
+
+```json
+{
+  "userId": 1,
+  "username": "john_doe",
+  "password": "securepassword123",
+  "fullName": {
+    "firstName": "John",
+    "lastName": "Doe"
+  },
+  "age": 25,
+  "email": "john.doe@example.com",
+  "isActive": true,
+  "hobbies": ["reading", "traveling"],
+  "address": {
+    "street": "123 Main Street",
+    "city": "Anytown",
+    "country": "Countryland"
+  }
+}
 ```
