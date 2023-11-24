@@ -24,7 +24,7 @@ const orderValidationSchema = z.object({
 });
 
 const userValidationSchema = z.object({
-  userId: z.string({ required_error: 'User id is required' }),
+  userId: z.number({ required_error: 'User id is required' }),
   username: z
     .string({ required_error: 'Username is required' })
     .toLowerCase()
