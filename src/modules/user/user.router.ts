@@ -11,8 +11,11 @@ router.put('/:userId', userController.updateUser);
 router.delete('/:userId', userController.deleteUser);
 
 // order routes
-router.put('/:userId/order', userController.updateUserOrder);
-router.get('/:userId/order', userController.getUserOrders);
-router.get('/:userId/order/total-price', userController.getUserOrderTotalPrice);
+router.put('/:userId/orders', userController.updateUserOrder);
+router.get('/:userId/orders', userController.getUserOrders);
+router.get(
+  '/:userId/orders/total-price',
+  userController.getUserOrderTotalPrice,
+);
 
 export const userRouter = router;
