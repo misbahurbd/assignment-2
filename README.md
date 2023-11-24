@@ -32,3 +32,9 @@ PORT=5000
 DATABASE_URL=<mongodb_url_here>
 BCRYPT_SALT_ROUNDS=12
 ```
+
+# 5. Start Development Server
+
+```typescript
+`npm run dev`;
+```
