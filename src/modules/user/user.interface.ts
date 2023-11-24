@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import { Model } from 'mongoose';
+
 export interface IFullName {
   firstName: string;
   lastName: string;
@@ -26,4 +29,8 @@ export interface IUser {
   hobbies: string[];
   address: IAddress;
   order?: IOrder[];
+}
+
+export interface UserModel extends Model<IUser> {
+  getUserByUserId: (userId: number) => Promise<IUser | null>;
 }

@@ -13,7 +13,28 @@ const getUsers = async (): Promise<IUser[]> => {
   return result;
 };
 
+const getSingleUser = async (userId: number): Promise<IUser | null> => {
+  const result = await User.getUserByUserId(userId);
+  return result;
+};
+
+const updateUser = async (
+  userId: number,
+  userData: IUser,
+): Promise<IUser | null> => {
+  const result = await User.findOneAndUpdate({ userId }, userData);
+  return result;
+};
+
+const deleteUser = async (userId: number): Promise<IUser | null> => {
+  const result = await User.findOneAndDelete({ userId });
+  return result;
+};
+
 export const userServices = {
   createUser,
   getUsers,
+  getSingleUser,
+  updateUser,
+  deleteUser,
 };

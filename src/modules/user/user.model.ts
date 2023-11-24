@@ -1,6 +1,13 @@
-import { IUser, IFullName, IAddress, IOrder } from './user.interface';
-import mongoose from 'mongoose';
+import {
+  IUser,
+  IFullName,
+  IAddress,
+  IOrder,
+  UserModel,
+} from './user.interface';
+import mongoose, { Document, Query, UpdateQuery } from 'mongoose';
 import bcrypt from 'bcrypt';
+import config from '../../config';
 
 // define full name schema
 const fullNameSchema = new mongoose.Schema<IFullName>(
@@ -55,7 +62,7 @@ const orderSchema = new mongoose.Schema<IOrder>({
 });
 
 // define user Schema
-const userSchema = new mongoose.Schema<IUser>(
+const userSchema = new mongoose.Schema<IUser, UserModel>(
   {
     userId: {
       type: Number,
@@ -114,9 +121,20 @@ const userSchema = new mongoose.Schema<IUser>(
   },
 );
 
+// create static function to get user by userId
+userSchema.statics.getUserByUserId = async (
+  userId: number,
+): Promise<IUser | null> => {
+  const user = await User.findOne({ userId });
+  return user;
+};
+
 // hashed user password
 userSchema.pre('save', async function (next) {
-  this.password = await bcrypt.hash(this.password, 12);
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bcrypt_salt_rounds),
+  );
   next();
 });
 
@@ -132,8 +150,20 @@ userSchema.pre('find', function (next) {
   next();
 });
 
-// handle single user middleware request
-userSchema.pre('findOne', function (next) {
+// hash password if user try to update password
+userSchema.pre('findOneAndUpdate', async function (next) {
+  const updateField: UpdateQuery<IUser> | null = this.getUpdate();
+  if (updateField?.password) {
+    updateField.password = await bcrypt.hash(
+      updateField.password,
+      Number(config.bcrypt_salt_rounds),
+    );
+  }
+  next();
+});
+
+// handle all single response data
+userSchema.pre(/^findOne/, function (this: Query<IUser, Document>, next) {
   this.findOne().projection({
     userId: 1,
     username: 1,
@@ -147,4 +177,4 @@ userSchema.pre('findOne', function (next) {
   next();
 });
 
-export const User = mongoose.model<IUser>('User', userSchema);
+export const User = mongoose.model<IUser, UserModel>('User', userSchema);
