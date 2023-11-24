@@ -5,7 +5,7 @@ import {
   IOrder,
   UserModel,
 } from './user.interface';
-import mongoose, { Document, Query, UpdateQuery } from 'mongoose';
+import mongoose, { UpdateQuery } from 'mongoose';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
@@ -46,20 +46,23 @@ const addressSchema = new mongoose.Schema<IAddress>(
 );
 
 // define order schema
-const orderSchema = new mongoose.Schema<IOrder>({
-  productName: {
-    type: String,
-    required: [true, 'Product name is required'],
+const orderSchema = new mongoose.Schema<IOrder>(
+  {
+    productName: {
+      type: String,
+      required: [true, 'Product name is required'],
+    },
+    price: {
+      type: Number,
+      required: [true, 'Price is required'],
+    },
+    quantity: {
+      type: Number,
+      required: [true, 'Quantity is required'],
+    },
   },
-  price: {
-    type: Number,
-    required: [true, 'Price is required'],
-  },
-  quantity: {
-    type: Number,
-    required: [true, 'Quantity is required'],
-  },
-});
+  { _id: false },
+);
 
 // define user Schema
 const userSchema = new mongoose.Schema<IUser, UserModel>(
@@ -104,7 +107,7 @@ const userSchema = new mongoose.Schema<IUser, UserModel>(
       type: addressSchema,
       required: [true, 'Address is required'],
     },
-    order: {
+    orders: {
       type: [orderSchema],
       default: undefined,
     },
@@ -121,12 +124,51 @@ const userSchema = new mongoose.Schema<IUser, UserModel>(
   },
 );
 
-// create static function to get user by userId
-userSchema.statics.getUserByUserId = async (
-  userId: number,
+// check existed user
+userSchema.statics.isUserExist = async (
+  userData: IUser,
 ): Promise<IUser | null> => {
+  const { username, email, userId } = userData;
+  const existedUser = await User.findOne({
+    $or: [{ username }, { email }, { userId }],
+  });
+  return existedUser;
+};
+
+// create static function to get user by userId
+userSchema.statics.getUserByUserId = async (userId: number) => {
   const user = await User.findOne({ userId });
   return user;
+};
+
+// create order on user
+userSchema.statics.updateOrder = async (userId: number, orderData: IOrder) => {
+  const user = await User.findOne({ userId }, { orders: 1 });
+  if (!user) {
+    return null;
+  }
+
+  if (!user.orders) {
+    const result = await User.findOneAndUpdate(
+      { userId },
+      {
+        $set: {
+          orders: [orderData],
+        },
+      },
+    );
+    return result;
+  }
+
+  const result = await User.findOneAndUpdate(
+    { userId },
+    {
+      $push: {
+        orders: orderData,
+      },
+    },
+  );
+  return result;
 };
 
 // hashed user password
@@ -135,18 +177,6 @@ userSchema.pre('save', async function (next) {
     this.password,
     Number(config.bcrypt_salt_rounds),
   );
-  next();
-});
-
-// handle all user middleware request
-userSchema.pre('find', function (next) {
-  this.find().projection({
-    username: 1,
-    fullName: 1,
-    age: 1,
-    email: 1,
-    address: 1,
-  });
   next();
 });
 
@@ -162,16 +192,13 @@ userSchema.pre('findOneAndUpdate', async function (next) {
   next();
 });
 
-// handle all single response data
-userSchema.pre(/^findOne/, function (this: Query<IUser, Document>, next) {
-  this.findOne().projection({
-    userId: 1,
+// handle all user middleware request
+userSchema.pre('find', function (next) {
+  this.find().projection({
     username: 1,
     fullName: 1,
     age: 1,
     email: 1,
-    isActive: 1,
-    hobbies: 1,
     address: 1,
   });
   next();

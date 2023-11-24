@@ -28,9 +28,11 @@ export interface IUser {
   isActive: boolean;
   hobbies: string[];
   address: IAddress;
-  order?: IOrder[];
+  orders?: IOrder[];
 }
 
 export interface UserModel extends Model<IUser> {
   getUserByUserId: (userId: number) => Promise<IUser | null>;
+  isUserExist: (userData: IUser) => Promise<IUser | null>;
+  updateOrder: (userId: number, orderData: IOrder) => Promise<IUser | null>;
 }

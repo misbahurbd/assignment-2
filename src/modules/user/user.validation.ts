@@ -17,13 +17,13 @@ const addressValidationSchema = z.object({
   country: z.string({ required_error: 'Country is required' }).trim(),
 });
 
-const orderValidationSchema = z.object({
+export const orderValidationSchema = z.object({
   productName: z.string({ required_error: 'Product name is required' }).trim(),
   price: z.number({ required_error: 'Price is required' }),
   quantity: z.number({ required_error: 'Quantity is required' }),
 });
 
-const userValidationSchema = z.object({
+export const userValidationSchema = z.object({
   userId: z.number({ required_error: 'User id is required' }),
   username: z
     .string({ required_error: 'Username is required' })
@@ -39,7 +39,5 @@ const userValidationSchema = z.object({
   isActive: z.boolean().default(true),
   hobbies: z.array(z.string()),
   address: addressValidationSchema,
-  order: z.array(orderValidationSchema).optional(),
+  orders: z.array(orderValidationSchema).optional(),
 });
-
-export default userValidationSchema;
